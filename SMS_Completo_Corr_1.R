@@ -1,6 +1,6 @@
-#Código SMS
+#Cï¿½digo SMS
 
-setwd('C:/Users/fabri/Dropbox/UFF/2021/02 Segundo Semestre 2021/Disciplinas/Trabalho de Conclusão de Curso II - Bacharelado/Códigos do R/SMS - Experimentos para o TCC/SVR_MSE_GA_Corr_1') #Define a pasta de arquivos onde serão salvos os arquivos de simulação, de ordenamento pela RF, do corte pelo SVR e do refinamento pelo GA.
+setwd('C:/Users/fabri/Dropbox/UFF/2021/02 Segundo Semestre 2021/Disciplinas/Trabalho de Conclusï¿½o de Curso II - Bacharelado/Cï¿½digos do R/SMS - Experimentos para o TCC/SVR_MSE_GA_Corr_1') #Define a pasta de arquivos onde serï¿½o salvos os arquivos de simulaï¿½ï¿½o, de ordenamento pela RF, do corte pelo SVR e do refinamento pelo GA.
 
 #install.packages('scrime') #instala o pacote SCRIME
 library(scrime) #Carrega o pacote SCRIME
@@ -11,17 +11,17 @@ library(randomForest)
 library(GA) #Carrega a biblioteca do GA.
 library(ggplot2) #Carrega a biblioteca ggplot2.
 
-#Parâmetros para simulação
+#Parï¿½metros para simulaï¿½ï¿½o
 
 dados<-list();                   #Cria lista de dados.
-genotipo<-list();                #Cria lista de genótipos.
-num_individuos<-1000;            #Número de indivíduos na amostra
+genotipo<-list();                #Cria lista de genï¿½tipos.
+num_individuos<-1000;            #Nï¿½mero de indivï¿½duos na amostra
 num_snp<-100;                    #Total de marcadores simulados
-list.snp<-list(1,2,3,4,5,6,7,8)  #Indica quais são os marcadores causais
-list.ia<-list(1,2,3,-1,-2,-3,1,2)  #Contrução das interações entre os 5 marcadores causais
+list.snp<-list(1,2,3,4,5,6,7,8)  #Indica quais sï¿½o os marcadores causais
+list.ia<-list(1,2,3,-1,-2,-3,1,2)  #Contruï¿½ï¿½o das interaï¿½ï¿½es entre os 5 marcadores causais
 
 
-#Executa a simulação do genótipo e do fenótipo simultaneamente
+#Executa a simulaï¿½ï¿½o do genï¿½tipo e do fenï¿½tipo simultaneamente
 simulacao<-simulateSNPglm(n.obs=num_individuos,
                           n.snp=num_snp,
                           list.ia=list.ia,
@@ -32,21 +32,21 @@ simulacao<-simulateSNPglm(n.obs=num_individuos,
                           err.fun=rnorm,
                           rand=123)
 
-#Definindo o genótipo
+#Definindo o genï¿½tipo
 genotipo[[1]]<-as.data.frame(simulacao$x)
 
-#Definindo o fenótipo
+#Definindo o fenï¿½tipo
 fenotipo<-as.data.frame(simulacao$y)
 names(fenotipo)<-"fenotipo"
 pdf(file="Histograma_fenotipo_1.pdf",height=5,width=9)
-hist(fenotipo$fenotipo,xlab="Fenótipo simulado",ylab="Número de touros",col="gray",main="")
+hist(fenotipo$fenotipo,xlab="Fenï¿½tipo simulado",ylab="Nï¿½mero de touros",col="gray",main="")
 dev.off()
 pdf(file="Boxplot_fenotipo_1.pdf",height=5,width=9)
-boxplot(fenotipo$fenotipo, ylab="Fenótipo simulado")
+boxplot(fenotipo$fenotipo, ylab="Fenï¿½tipo simulado")
 dev.off()
 
-#testando a normalidade do Fenótipo
-teste_normal<-shapiro.test(fenotipo$fenotipo) #Não é normal
+#testando a normalidade do Fenï¿½tipo
+teste_normal<-shapiro.test(fenotipo$fenotipo) #Nï¿½o ï¿½ normal
 
 #definindo o dataframe genotipo com fenotipo
 dados[[1]]<-as.data.frame(cbind(genotipo[[1]],fenotipo))
@@ -54,7 +54,7 @@ colnames(dados[[1]])[ncol(dados[[1]])]<-"fenotipo"
 
 save(dados,file="Simulacao1.RData")
 
-# Função para realizar para o SVR com k-fold.
+# Funï¿½ï¿½o para realizar para o SVR com k-fold.
 validacao_cruzada<-function(data,folds,gamma,cost,epsilon,kernel) 
 {
   datalength = nrow(data)
@@ -108,7 +108,7 @@ validacao_cruzada<-function(data,folds,gamma,cost,epsilon,kernel)
 ########
 
 
-#Função para o cálculo do valor p bruto e ajustado pela correção de Bonferroni
+#Funï¿½ï¿½o para o cï¿½lculo do valor p bruto e ajustado pela correï¿½ï¿½o de Bonferroni
 valor.p<-function(genotipo_fenotipo)
 {
   valor_p_bruto<-vector();
@@ -133,11 +133,11 @@ valor.p<-function(genotipo_fenotipo)
   return(valor_p)
 }
 
-################ Início do SMS##################
+################ Inï¿½cio do SMS##################
 
-#Definição de listas para cada kernel do SVR
+#Definiï¿½ï¿½o de listas para cada kernel do SVR
 #svr_test<-list()
-mean_svr_RF_list<-list() #Cria lista para a média do SVR sobre o rank da RF
+mean_svr_RF_list<-list() #Cria lista para a mï¿½dia do SVR sobre o rank da RF
 GA<-list()
 minimo<-list()
 corte<-list()
@@ -148,11 +148,11 @@ percentual_snps<-0.95;
 i=1 #Contador do kernel do SVR utilizado
 
 #Random Forest
-ntree<-4000           #Número de árvores dentro da floresta aleatória.
+ntree<-4000           #Nï¿½mero de ï¿½rvores dentro da floresta aleatï¿½ria.
 
 data_temp<-as.data.frame(dados[[1]]) #Transforma a base de dados em dataframe.
 
-set.seed(1) #Semente aleatória para floresta aleatória.
+set.seed(1) #Semente aleatï¿½ria para floresta aleatï¿½ria.
 
 RF<- randomForest(fenotipo~., data=data_temp,
                   ntree=ntree,
@@ -163,9 +163,9 @@ rank_RF<-sort(importance(RF)[,1],decreasing=TRUE)
 View(rank_RF)
 
 
-#Erro MSE do SVR em relação ao rank da RF
+#Erro MSE do SVR em relaï¿½ï¿½o ao rank da RF
 
-#Inicialização de variávei do SVR
+#Inicializaï¿½ï¿½o de variï¿½vei do SVR
 gamma = 0.01
 cost = 1.0
 epsilon = 0.1
@@ -179,7 +179,7 @@ passo<-10;
 limite<-floor((length(names(dados[[1]][,-dim(dados[[1]])[2]]))/passo)*percentual_snps);
 
 
-#COnstrói a sequência crescente de SNPs mais importantes a partir do rank da RF
+#COnstrï¿½i a sequï¿½ncia crescente de SNPs mais importantes a partir do rank da RF
 for (cont in 1:(limite+1))
 {
   
@@ -196,7 +196,7 @@ for (cont in 1:(limite+1))
     
   }
   
-  #Avalia os 10-fold para o SVR na sequência crescente de SNPs a partir do rank da RF
+  #Avalia os 10-fold para o SVR na sequï¿½ncia crescente de SNPs a partir do rank da RF
   svr_test<- validacao_cruzada(data = dados[[1]][c(var_sel,"fenotipo")],
                                folds = folds, 
                                gamma = gamma,
@@ -206,7 +206,7 @@ for (cont in 1:(limite+1))
   mean_svr_RF_list[[i]][cont]<-svr_test[1]
 } 
 
-#Constroi o Gráfico do MSE do SVR sobre a RF
+#Constroi o Grï¿½fico do MSE do SVR sobre a RF
 pdf(file="Grafico_MSE_SVR_linear.pdf",height=5,width=9)
 plot(seq(passo,limite*(passo)+10,by=passo),
      mean_svr_RF_list[[i]],
@@ -238,15 +238,15 @@ valor_p<-valor.p(dados[[1]])
 rank_global<-cbind(importance(RF)[,1],valor_p)
 View(rank_global)
 
-#Selecionando somente o genótipo após o corte
+#Selecionando somente o genï¿½tipo apï¿½s o corte
 genotipo[[2]]<-dados[[1]][,names(rank_RF[1:corte[[i]]])]
 
-#Selecionando o genotipo e o fenótipo após o corte
+#Selecionando o genotipo e o fenï¿½tipo apï¿½s o corte
 dados[[2]]<-cbind(genotipo[[2]],dados[[1]]$fenotipo)
 names(dados[[2]])[ncol(dados[[2]])]<-"fenotipo"
 
 
-###AG para a SEGUNDA seleção dos marcadores na base de dados inicial (REFINAMENTO)
+###AG para a SEGUNDA seleï¿½ï¿½o dos marcadores na base de dados inicial (REFINAMENTO)
 
 #Declara o objeto GA como uma lista
 
@@ -264,13 +264,13 @@ f<-function(x)
 fitness<-function(x) {f(x)}
 
 
-#Parâmetros do GA
-run = 30            #Número máximo de gerações do GA sem melhoria.
-maxiter = 10.000    #Número máximo de gerações do GA.
+#Parï¿½metros do GA
+run = 30            #Nï¿½mero mï¿½ximo de geraï¿½ï¿½es do GA sem melhoria.
+maxiter = 10.000    #Nï¿½mero mï¿½ximo de geraï¿½ï¿½es do GA.
 pcross = 0.8        #Probabilidade de crossing over
-pmut = 0.1          #Probabilidade de mutação.
-elitism = 5         #Número de melhores indivíduos do GA que irão para próxima geração sem alteração alguma.
-popSize=100         #Tamanho da população em cada geração do GA.
+pmut = 0.1          #Probabilidade de mutaï¿½ï¿½o.
+elitism = 5         #Nï¿½mero de melhores indivï¿½duos do GA que irï¿½o para prï¿½xima geraï¿½ï¿½o sem alteraï¿½ï¿½o alguma.
+popSize=100         #Tamanho da populaï¿½ï¿½o em cada geraï¿½ï¿½o do GA.
 
 GA[[i]]<-ga(type="binary",
             fitness=fitness, 
@@ -289,29 +289,29 @@ snps_selec_ref[[i]]<-names(GA[[i]]@solution[,which(GA[[i]]@solution==1)])
 snps_selec_SVR_linear_GA_corr<-snps_selec_ref[[i]]
 snps_selec_SVR_linear_GA_corr
 
-#Relatório do AG
+#Relatï¿½rio do AG
 summary(GA[[i]])
 
-#Gráfico do AG
+#Grï¿½fico do AG
 plot(GA[[i]])
 
-#Salvando o gráfico do AG com ggplot2
+#Salvando o grï¿½fico do AG com ggplot2
 pdf(file="Grafico_GA_SVR_linear.pdf",height=5,width=9)
 geracao<-seq(1,GA[[1]]@iter,by=1)
 mean_fitness   <-  GA[[i]]@summary[,2]
 median_fitness <- GA[[i]]@summary[,4]
 best_fitness   <- GA[[i]]@summary[,1]
-Estatísticas <- c(rep("Mediana", length(geracao)), rep("Média", length(geracao)),rep("Melhor", length(geracao)) )
+Estatï¿½sticas <- c(rep("Mediana", length(geracao)), rep("Mï¿½dia", length(geracao)),rep("Melhor", length(geracao)) )
 data_grafico_1 <- data.frame(
-  Geração = rep(geracao, 3),
-  Aptidão = c(mean_fitness, median_fitness, best_fitness),
-  Estatísticas = Estatísticas
+  Geraï¿½ï¿½o = rep(geracao, 3),
+  Aptidï¿½o = c(mean_fitness, median_fitness, best_fitness),
+  Estatï¿½sticas = Estatï¿½sticas
 )
 
-ggplot(data_grafico_1, aes(x = Geração, y = Aptidão, group = Estatísticas)) +
-  geom_line(aes(colour = Estatísticas, linetype = Estatísticas),size=2) + 
+ggplot(data_grafico_1, aes(x = Geraï¿½ï¿½o, y = Aptidï¿½o, group = Estatï¿½sticas)) +
+  geom_line(aes(colour = Estatï¿½sticas, linetype = Estatï¿½sticas),size=2) + 
   geom_point() +
-  scale_x_continuous(breaks = seq(min(data_grafico_1$Geração), max(data_grafico_1$Geração), by = 1))
+  scale_x_continuous(breaks = seq(min(data_grafico_1$Geraï¿½ï¿½o), max(data_grafico_1$Geraï¿½ï¿½o), by = 1))
 dev.off()
 
 
@@ -322,9 +322,9 @@ i=2 #Contador do kernel "radial" com gamma=0.001 do SVR utilizado
 
 
 
-#Erro MSE do SVR em relação ao rank da RF
+#Erro MSE do SVR em relaï¿½ï¿½o ao rank da RF
 
-#Inicialização de variávei do SVR
+#Inicializaï¿½ï¿½o de variï¿½vei do SVR
 gamma = 0.001
 cost = 1.0
 epsilon = 0.1
@@ -338,7 +338,7 @@ passo<-10;
 limite<-floor((length(names(dados[[1]][,-dim(dados[[1]])[2]]))/passo)*percentual_snps);
 
 
-#COnstrói a sequência crescente de SNPs mais importantes a partir do rank da RF
+#COnstrï¿½i a sequï¿½ncia crescente de SNPs mais importantes a partir do rank da RF
 for (cont in 1:(limite+1))
 {
   
@@ -355,7 +355,7 @@ for (cont in 1:(limite+1))
     
   }
   
-  #Avalia os 10-fold para o SVR na sequência crescente de SNPs a partir do rank da RF
+  #Avalia os 10-fold para o SVR na sequï¿½ncia crescente de SNPs a partir do rank da RF
   svr_test<- validacao_cruzada(data = dados[[1]][c(var_sel,"fenotipo")],
                                folds = folds, 
                                gamma = gamma,
@@ -365,7 +365,7 @@ for (cont in 1:(limite+1))
   mean_svr_RF_list[[i]][cont]<-svr_test[1]
 } 
 
-#Constroi o Gráfico do MSE do SVR sobre a RF
+#Constroi o Grï¿½fico do MSE do SVR sobre a RF
 pdf(file="Grafico_MSE_SVR_radial_0001.pdf",height=5,width=9)
 plot(seq(passo,limite*(passo)+10,by=passo),
      mean_svr_RF_list[[i]],
@@ -397,15 +397,15 @@ valor_p<-valor.p(dados[[1]])
 rank_global<-cbind(importance(RF)[,1],valor_p)
 View(rank_global)
 
-#Selecionando somente o genótipo após o corte
+#Selecionando somente o genï¿½tipo apï¿½s o corte
 genotipo[[2]]<-dados[[1]][,names(rank_RF[1:corte[[i]]])]
 
-#Selecionando o genotipo e o fenótipo após o corte
+#Selecionando o genotipo e o fenï¿½tipo apï¿½s o corte
 dados[[2]]<-cbind(genotipo[[2]],dados[[1]]$fenotipo)
 names(dados[[2]])[ncol(dados[[2]])]<-"fenotipo"
 
 
-###AG para a SEGUNDA seleção dos marcadores na base de dados inicial (REFINAMENTO)
+###AG para a SEGUNDA seleï¿½ï¿½o dos marcadores na base de dados inicial (REFINAMENTO)
 
 #Declara o objeto GA como uma lista
 
@@ -423,13 +423,13 @@ f<-function(x)
 fitness<-function(x) {f(x)}
 
 
-#Parâmetros do GA
-run = 30            #Número máximo de gerações do GA sem melhoria.
-maxiter = 10.000    #Número máximo de gerações do GA.
+#Parï¿½metros do GA
+run = 30            #Nï¿½mero mï¿½ximo de geraï¿½ï¿½es do GA sem melhoria.
+maxiter = 10.000    #Nï¿½mero mï¿½ximo de geraï¿½ï¿½es do GA.
 pcross = 0.8        #Probabilidade de crossing over
-pmut = 0.1          #Probabilidade de mutação.
-elitism = 5         #Número de melhores indivíduos do GA que irão para próxima geração sem alteração alguma.
-popSize=100         #Tamanho da população em cada geração do GA.
+pmut = 0.1          #Probabilidade de mutaï¿½ï¿½o.
+elitism = 5         #Nï¿½mero de melhores indivï¿½duos do GA que irï¿½o para prï¿½xima geraï¿½ï¿½o sem alteraï¿½ï¿½o alguma.
+popSize=100         #Tamanho da populaï¿½ï¿½o em cada geraï¿½ï¿½o do GA.
 
 GA[[i]]<-ga(type="binary",
             fitness=fitness, 
@@ -448,29 +448,29 @@ snps_selec_ref[[i]]<-names(GA[[i]]@solution[,which(GA[[i]]@solution==1)])
 snps_selec_SVR_radial_0001_GA_corr<-snps_selec_ref[[i]]
 snps_selec_SVR_radial_0001_GA_corr
 
-#Relatório do AG
+#Relatï¿½rio do AG
 summary(GA[[i]])
 
-#Gráfico do AG
+#Grï¿½fico do AG
 plot(GA[[i]])
 
-#Salvando o gráfico do AG com ggplot2
+#Salvando o grï¿½fico do AG com ggplot2
 pdf(file="Grafico_GA_SVR_radial_0001.pdf",height=5,width=9)
 geracao<-seq(1,GA[[1]]@iter,by=1)
 mean_fitness   <-  GA[[i]]@summary[,2]
 median_fitness <- GA[[i]]@summary[,4]
 best_fitness   <- GA[[i]]@summary[,1]
-Estatísticas <- c(rep("Mediana", length(geracao)), rep("Média", length(geracao)),rep("Melhor", length(geracao)) )
+Estatï¿½sticas <- c(rep("Mediana", length(geracao)), rep("Mï¿½dia", length(geracao)),rep("Melhor", length(geracao)) )
 data_grafico_1 <- data.frame(
-  Geração = rep(geracao, 3),
-  Aptidão = c(mean_fitness, median_fitness, best_fitness),
-  Estatísticas = Estatísticas
+  Geraï¿½ï¿½o = rep(geracao, 3),
+  Aptidï¿½o = c(mean_fitness, median_fitness, best_fitness),
+  Estatï¿½sticas = Estatï¿½sticas
 )
 
-ggplot(data_grafico_1, aes(x = Geração, y = Aptidão, group = Estatísticas)) +
-  geom_line(aes(colour = Estatísticas, linetype = Estatísticas),size=2) + 
+ggplot(data_grafico_1, aes(x = Geraï¿½ï¿½o, y = Aptidï¿½o, group = Estatï¿½sticas)) +
+  geom_line(aes(colour = Estatï¿½sticas, linetype = Estatï¿½sticas),size=2) + 
   geom_point() +
-  scale_x_continuous(breaks = seq(min(data_grafico_1$Geração), max(data_grafico_1$Geração), by = 1))
+  scale_x_continuous(breaks = seq(min(data_grafico_1$Geraï¿½ï¿½o), max(data_grafico_1$Geraï¿½ï¿½o), by = 1))
 dev.off()
 
 
@@ -481,9 +481,9 @@ dev.off()
 
 i=3 #Contador do kernel "radial" com gamma=0.01 do SVR utilizado
 
-#Erro MSE do SVR em relação ao rank da RF
+#Erro MSE do SVR em relaï¿½ï¿½o ao rank da RF
 
-#Inicialização de variávei do SVR
+#Inicializaï¿½ï¿½o de variï¿½vei do SVR
 gamma = 0.01
 cost = 1.0
 epsilon = 0.1
@@ -497,7 +497,7 @@ passo<-10;
 limite<-floor((length(names(dados[[1]][,-dim(dados[[1]])[2]]))/passo)*percentual_snps);
 
 
-#COnstrói a sequência crescente de SNPs mais importantes a partir do rank da RF
+#COnstrï¿½i a sequï¿½ncia crescente de SNPs mais importantes a partir do rank da RF
 for (cont in 1:(limite+1))
 {
   
@@ -514,7 +514,7 @@ for (cont in 1:(limite+1))
     
   }
   
-  #Avalia os 10-fold para o SVR na sequência crescente de SNPs a partir do rank da RF
+  #Avalia os 10-fold para o SVR na sequï¿½ncia crescente de SNPs a partir do rank da RF
   svr_test<- validacao_cruzada(data = dados[[1]][c(var_sel,"fenotipo")],
                                folds = folds, 
                                gamma = gamma,
@@ -524,7 +524,7 @@ for (cont in 1:(limite+1))
   mean_svr_RF_list[[i]][cont]<-svr_test[1]
 } 
 
-#Constroi o Gráfico do MSE do SVR sobre a RF
+#Constroi o Grï¿½fico do MSE do SVR sobre a RF
 pdf(file="Grafico_MSE_SVR_radial_001.pdf",height=5,width=9)
 plot(seq(passo,limite*(passo)+10,by=passo),
      mean_svr_RF_list[[i]],
@@ -556,15 +556,15 @@ valor_p<-valor.p(dados[[1]])
 rank_global<-cbind(importance(RF)[,1],valor_p)
 View(rank_global)
 
-#Selecionando somente o genótipo após o corte
+#Selecionando somente o genï¿½tipo apï¿½s o corte
 genotipo[[2]]<-dados[[1]][,names(rank_RF[1:corte[[i]]])]
 
-#Selecionando o genotipo e o fenótipo após o corte
+#Selecionando o genotipo e o fenï¿½tipo apï¿½s o corte
 dados[[2]]<-cbind(genotipo[[2]],dados[[1]]$fenotipo)
 names(dados[[2]])[ncol(dados[[2]])]<-"fenotipo"
 
 
-###AG para a SEGUNDA seleção dos marcadores na base de dados inicial (REFINAMENTO)
+###AG para a SEGUNDA seleï¿½ï¿½o dos marcadores na base de dados inicial (REFINAMENTO)
 
 #Declara o objeto GA como uma lista
 
@@ -582,13 +582,13 @@ f<-function(x)
 fitness<-function(x) {f(x)}
 
 
-#Parâmetros do GA
-run = 30            #Número máximo de gerações do GA sem melhoria.
-maxiter = 10.000    #Número máximo de gerações do GA.
+#Parï¿½metros do GA
+run = 30            #Nï¿½mero mï¿½ximo de geraï¿½ï¿½es do GA sem melhoria.
+maxiter = 10.000    #Nï¿½mero mï¿½ximo de geraï¿½ï¿½es do GA.
 pcross = 0.8        #Probabilidade de crossing over
-pmut = 0.1          #Probabilidade de mutação.
-elitism = 5         #Número de melhores indivíduos do GA que irão para próxima geração sem alteração alguma.
-popSize=100         #Tamanho da população em cada geração do GA.
+pmut = 0.1          #Probabilidade de mutaï¿½ï¿½o.
+elitism = 5         #Nï¿½mero de melhores indivï¿½duos do GA que irï¿½o para prï¿½xima geraï¿½ï¿½o sem alteraï¿½ï¿½o alguma.
+popSize=100         #Tamanho da populaï¿½ï¿½o em cada geraï¿½ï¿½o do GA.
 
 GA[[i]]<-ga(type="binary",
             fitness=fitness, 
@@ -607,29 +607,29 @@ snps_selec_ref[[i]]<-names(GA[[i]]@solution[,which(GA[[i]]@solution==1)])
 snps_selec_SVR_radial_001_GA_corr<-snps_selec_ref[[i]]
 snps_selec_SVR_radial_001_GA_corr
 
-#Relatório do AG
+#Relatï¿½rio do AG
 summary(GA[[i]])
 
-#Gráfico do AG
+#Grï¿½fico do AG
 plot(GA[[i]])
 
-#Salvando o gráfico do AG com ggplot2
+#Salvando o grï¿½fico do AG com ggplot2
 pdf(file="Grafico_GA_SVR_radial_001.pdf",height=5,width=9)
 geracao<-seq(1,GA[[1]]@iter,by=1)
 mean_fitness   <-  GA[[i]]@summary[,2]
 median_fitness <- GA[[i]]@summary[,4]
 best_fitness   <- GA[[i]]@summary[,1]
-Estatísticas <- c(rep("Mediana", length(geracao)), rep("Média", length(geracao)),rep("Melhor", length(geracao)) )
+Estatï¿½sticas <- c(rep("Mediana", length(geracao)), rep("Mï¿½dia", length(geracao)),rep("Melhor", length(geracao)) )
 data_grafico_1 <- data.frame(
-  Geração = rep(geracao, 3),
-  Aptidão = c(mean_fitness, median_fitness, best_fitness),
-  Estatísticas = Estatísticas
+  Geraï¿½ï¿½o = rep(geracao, 3),
+  Aptidï¿½o = c(mean_fitness, median_fitness, best_fitness),
+  Estatï¿½sticas = Estatï¿½sticas
 )
 
-ggplot(data_grafico_1, aes(x = Geração, y = Aptidão, group = Estatísticas)) +
-  geom_line(aes(colour = Estatísticas, linetype = Estatísticas),size=2) + 
+ggplot(data_grafico_1, aes(x = Geraï¿½ï¿½o, y = Aptidï¿½o, group = Estatï¿½sticas)) +
+  geom_line(aes(colour = Estatï¿½sticas, linetype = Estatï¿½sticas),size=2) + 
   geom_point() +
-  scale_x_continuous(breaks = seq(min(data_grafico_1$Geração), max(data_grafico_1$Geração), by = 1))
+  scale_x_continuous(breaks = seq(min(data_grafico_1$Geraï¿½ï¿½o), max(data_grafico_1$Geraï¿½ï¿½o), by = 1))
 dev.off()
 
 
@@ -638,9 +638,9 @@ dev.off()
 
 i=4 #Contador do kernel "radial" com gamma=0.01 do SVR utilizado
 
-#Erro MSE do SVR em relação ao rank da RF
+#Erro MSE do SVR em relaï¿½ï¿½o ao rank da RF
 
-#Inicialização de variávei do SVR
+#Inicializaï¿½ï¿½o de variï¿½vei do SVR
 gamma = 0.1
 cost = 1.0
 epsilon = 0.1
@@ -654,7 +654,7 @@ passo<-10;
 limite<-floor((length(names(dados[[1]][,-dim(dados[[1]])[2]]))/passo)*percentual_snps);
 
 
-#COnstrói a sequência crescente de SNPs mais importantes a partir do rank da RF
+#COnstrï¿½i a sequï¿½ncia crescente de SNPs mais importantes a partir do rank da RF
 for (cont in 1:(limite+1))
 {
   
@@ -671,7 +671,7 @@ for (cont in 1:(limite+1))
     
   }
   
-  #Avalia os 10-fold para o SVR na sequência crescente de SNPs a partir do rank da RF
+  #Avalia os 10-fold para o SVR na sequï¿½ncia crescente de SNPs a partir do rank da RF
   svr_test<- validacao_cruzada(data = dados[[1]][c(var_sel,"fenotipo")],
                                folds = folds, 
                                gamma = gamma,
@@ -681,7 +681,7 @@ for (cont in 1:(limite+1))
   mean_svr_RF_list[[i]][cont]<-svr_test[1]
 } 
 
-#Constroi o Gráfico do MSE do SVR sobre a RF
+#Constroi o Grï¿½fico do MSE do SVR sobre a RF
 pdf(file="Grafico_MSE_SVR_radial_01.pdf",height=5,width=9)
 plot(seq(passo,limite*(passo)+10,by=passo),
      mean_svr_RF_list[[i]],
@@ -713,15 +713,15 @@ valor_p<-valor.p(dados[[1]])
 rank_global<-cbind(importance(RF)[,1],valor_p)
 View(rank_global)
 
-#Selecionando somente o genótipo após o corte
+#Selecionando somente o genï¿½tipo apï¿½s o corte
 genotipo[[2]]<-dados[[1]][,names(rank_RF[1:corte[[i]]])]
 
-#Selecionando o genotipo e o fenótipo após o corte
+#Selecionando o genotipo e o fenï¿½tipo apï¿½s o corte
 dados[[2]]<-cbind(genotipo[[2]],dados[[1]]$fenotipo)
 names(dados[[2]])[ncol(dados[[2]])]<-"fenotipo"
 
 
-###AG para a SEGUNDA seleção dos marcadores na base de dados inicial (REFINAMENTO)
+###AG para a SEGUNDA seleï¿½ï¿½o dos marcadores na base de dados inicial (REFINAMENTO)
 
 #Declara o objeto GA como uma lista
 
@@ -739,13 +739,13 @@ f<-function(x)
 fitness<-function(x) {f(x)}
 
 
-#Parâmetros do GA
-run = 30            #Número máximo de gerações do GA sem melhoria.
-maxiter = 10.000    #Número máximo de gerações do GA.
+#Parï¿½metros do GA
+run = 30            #Nï¿½mero mï¿½ximo de geraï¿½ï¿½es do GA sem melhoria.
+maxiter = 10.000    #Nï¿½mero mï¿½ximo de geraï¿½ï¿½es do GA.
 pcross = 0.8        #Probabilidade de crossing over
-pmut = 0.1          #Probabilidade de mutação.
-elitism = 5         #Número de melhores indivíduos do GA que irão para próxima geração sem alteração alguma.
-popSize=100         #Tamanho da população em cada geração do GA.
+pmut = 0.1          #Probabilidade de mutaï¿½ï¿½o.
+elitism = 5         #Nï¿½mero de melhores indivï¿½duos do GA que irï¿½o para prï¿½xima geraï¿½ï¿½o sem alteraï¿½ï¿½o alguma.
+popSize=100         #Tamanho da populaï¿½ï¿½o em cada geraï¿½ï¿½o do GA.
 
 GA[[i]]<-ga(type="binary",
             fitness=fitness, 
@@ -764,29 +764,29 @@ snps_selec_ref[[i]]<-names(GA[[i]]@solution[,which(GA[[i]]@solution==1)])
 snps_selec_SVR_radial_01_GA_corr<-snps_selec_ref[[i]]
 snps_selec_SVR_radial_01_GA_corr
 
-#Relatório do AG
+#Relatï¿½rio do AG
 summary(GA[[i]])
 
-#Gráfico do AG
+#Grï¿½fico do AG
 plot(GA[[i]])
 
-#Salvando o gráfico do AG com ggplot2
+#Salvando o grï¿½fico do AG com ggplot2
 pdf(file="Grafico_GA_SVR_radial_01.pdf",height=5,width=9)
 geracao<-seq(1,GA[[1]]@iter,by=1)
 mean_fitness   <-  GA[[i]]@summary[,2]
 median_fitness <- GA[[i]]@summary[,4]
 best_fitness   <- GA[[i]]@summary[,1]
-Estatísticas <- c(rep("Mediana", length(geracao)), rep("Média", length(geracao)),rep("Melhor", length(geracao)) )
+Estatï¿½sticas <- c(rep("Mediana", length(geracao)), rep("Mï¿½dia", length(geracao)),rep("Melhor", length(geracao)) )
 data_grafico_1 <- data.frame(
-  Geração = rep(geracao, 3),
-  Aptidão = c(mean_fitness, median_fitness, best_fitness),
-  Estatísticas = Estatísticas
+  Geraï¿½ï¿½o = rep(geracao, 3),
+  Aptidï¿½o = c(mean_fitness, median_fitness, best_fitness),
+  Estatï¿½sticas = Estatï¿½sticas
 )
 
-ggplot(data_grafico_1, aes(x = Geração, y = Aptidão, group = Estatísticas)) +
-  geom_line(aes(colour = Estatísticas, linetype = Estatísticas),size=2) + 
+ggplot(data_grafico_1, aes(x = Geraï¿½ï¿½o, y = Aptidï¿½o, group = Estatï¿½sticas)) +
+  geom_line(aes(colour = Estatï¿½sticas, linetype = Estatï¿½sticas),size=2) + 
   geom_point() +
-  scale_x_continuous(breaks = seq(min(data_grafico_1$Geração), max(data_grafico_1$Geração), by = 1))
+  scale_x_continuous(breaks = seq(min(data_grafico_1$Geraï¿½ï¿½o), max(data_grafico_1$Geraï¿½ï¿½o), by = 1))
 dev.off()
 
 
@@ -794,9 +794,9 @@ dev.off()
 
 i=5 #Contador do kernel "radial" com gamma=0.01 do SVR utilizado
 
-#Erro MSE do SVR em relação ao rank da RF
+#Erro MSE do SVR em relaï¿½ï¿½o ao rank da RF
 
-#Inicialização de variávei do SVR
+#Inicializaï¿½ï¿½o de variï¿½vei do SVR
 gamma = 1
 cost = 1.0
 epsilon = 0.1
@@ -810,7 +810,7 @@ passo<-10;
 limite<-floor((length(names(dados[[1]][,-dim(dados[[1]])[2]]))/passo)*percentual_snps);
 
 
-#COnstrói a sequência crescente de SNPs mais importantes a partir do rank da RF
+#COnstrï¿½i a sequï¿½ncia crescente de SNPs mais importantes a partir do rank da RF
 for (cont in 1:(limite+1))
 {
   
@@ -827,7 +827,7 @@ for (cont in 1:(limite+1))
     
   }
   
-  #Avalia os 10-fold para o SVR na sequência crescente de SNPs a partir do rank da RF
+  #Avalia os 10-fold para o SVR na sequï¿½ncia crescente de SNPs a partir do rank da RF
   svr_test<- validacao_cruzada(data = dados[[1]][c(var_sel,"fenotipo")],
                                folds = folds, 
                                gamma = gamma,
@@ -837,7 +837,7 @@ for (cont in 1:(limite+1))
   mean_svr_RF_list[[i]][cont]<-svr_test[1]
 } 
 
-#Constroi o Gráfico do MSE do SVR sobre a RF
+#Constroi o Grï¿½fico do MSE do SVR sobre a RF
 pdf(file="Grafico_MSE_SVR_radial_1.pdf",height=5,width=9)
 plot(seq(passo,limite*(passo)+10,by=passo),
      mean_svr_RF_list[[i]],
@@ -869,15 +869,15 @@ valor_p<-valor.p(dados[[1]])
 rank_global<-cbind(importance(RF)[,1],valor_p)
 View(rank_global)
 
-#Selecionando somente o genótipo após o corte
+#Selecionando somente o genï¿½tipo apï¿½s o corte
 genotipo[[2]]<-dados[[1]][,names(rank_RF[1:corte[[i]]])]
 
-#Selecionando o genotipo e o fenótipo após o corte
+#Selecionando o genotipo e o fenï¿½tipo apï¿½s o corte
 dados[[2]]<-cbind(genotipo[[2]],dados[[1]]$fenotipo)
 names(dados[[2]])[ncol(dados[[2]])]<-"fenotipo"
 
 
-###AG para a SEGUNDA seleção dos marcadores na base de dados inicial (REFINAMENTO)
+###AG para a SEGUNDA seleï¿½ï¿½o dos marcadores na base de dados inicial (REFINAMENTO)
 
 #Declara o objeto GA como uma lista
 
@@ -895,13 +895,13 @@ f<-function(x)
 fitness<-function(x) {f(x)}
 
 
-#Parâmetros do GA
-run = 30            #Número máximo de gerações do GA sem melhoria.
-maxiter = 10.000    #Número máximo de gerações do GA.
+#Parï¿½metros do GA
+run = 30            #Nï¿½mero mï¿½ximo de geraï¿½ï¿½es do GA sem melhoria.
+maxiter = 10.000    #Nï¿½mero mï¿½ximo de geraï¿½ï¿½es do GA.
 pcross = 0.8        #Probabilidade de crossing over
-pmut = 0.1          #Probabilidade de mutação.
-elitism = 5         #Número de melhores indivíduos do GA que irão para próxima geração sem alteração alguma.
-popSize=100         #Tamanho da população em cada geração do GA.
+pmut = 0.1          #Probabilidade de mutaï¿½ï¿½o.
+elitism = 5         #Nï¿½mero de melhores indivï¿½duos do GA que irï¿½o para prï¿½xima geraï¿½ï¿½o sem alteraï¿½ï¿½o alguma.
+popSize=100         #Tamanho da populaï¿½ï¿½o em cada geraï¿½ï¿½o do GA.
 
 GA[[i]]<-ga(type="binary",
             fitness=fitness, 
@@ -920,33 +920,33 @@ snps_selec_ref[[i]]<-names(GA[[i]]@solution[,which(GA[[i]]@solution==1)])
 snps_selec_SVR_radial_1_GA_corr<-snps_selec_ref[[i]]
 snps_selec_SVR_radial_1_GA_corr
 
-#Relatório do AG
+#Relatï¿½rio do AG
 summary(GA[[i]])
 
-#Gráfico do AG
+#Grï¿½fico do AG
 plot(GA[[i]])
 
-#Salvando o gráfico do AG com ggplot2
+#Salvando o grï¿½fico do AG com ggplot2
 pdf(file="Grafico_GA_SVR_radial_1.pdf",height=5,width=9)
 geracao<-seq(1,GA[[1]]@iter,by=1)
 mean_fitness   <-  GA[[i]]@summary[,2]
 median_fitness <- GA[[i]]@summary[,4]
 best_fitness   <- GA[[i]]@summary[,1]
-Estatísticas <- c(rep("Mediana", length(geracao)), rep("Média", length(geracao)),rep("Melhor", length(geracao)) )
+Estatï¿½sticas <- c(rep("Mediana", length(geracao)), rep("Mï¿½dia", length(geracao)),rep("Melhor", length(geracao)) )
 data_grafico_1 <- data.frame(
-  Geração = rep(geracao, 3),
-  Aptidão = c(mean_fitness, median_fitness, best_fitness),
-  Estatísticas = Estatísticas
+  Geraï¿½ï¿½o = rep(geracao, 3),
+  Aptidï¿½o = c(mean_fitness, median_fitness, best_fitness),
+  Estatï¿½sticas = Estatï¿½sticas
 )
 
-ggplot(data_grafico_1, aes(x = Geração, y = Aptidão, group = Estatísticas)) +
-  geom_line(aes(colour = Estatísticas, linetype = Estatísticas),size=2) + 
+ggplot(data_grafico_1, aes(x = Geraï¿½ï¿½o, y = Aptidï¿½o, group = Estatï¿½sticas)) +
+  geom_line(aes(colour = Estatï¿½sticas, linetype = Estatï¿½sticas),size=2) + 
   geom_point() +
-  scale_x_continuous(breaks = seq(min(data_grafico_1$Geração), max(data_grafico_1$Geração), by = 1))
+  scale_x_continuous(breaks = seq(min(data_grafico_1$Geraï¿½ï¿½o), max(data_grafico_1$Geraï¿½ï¿½o), by = 1))
 dev.off()
 
-####União dos SNPs selecionados####
-#O argumento lista_SNPs tem que está no formato lista com pelo menos 2 elementos.
+####Uniï¿½o dos SNPs selecionados####
+#O argumento lista_SNPs tem que estï¿½ no formato lista com pelo menos 2 elementos.
 uniao_snps<-function(lista_SNPs){
   uniao <- list()
   uniao[[1]]<-union(lista_SNPs[[1]],lista_SNPs[[2]])
@@ -961,8 +961,8 @@ uniao_snps(snps_selec_ref)
 
 uniao_final<-uniao_snps(snps_selec_ref)
 
-####Interseção dos SNPs selecionados####
-#O argumento lista_SNPs tem que está no formato lista com pelo menos 2 elementos.
+####Interseï¿½ï¿½o dos SNPs selecionados####
+#O argumento lista_SNPs tem que estï¿½ no formato lista com pelo menos 2 elementos.
 intersecao_snps<-function(lista_SNPs){
   intersecao <- list()
   intersecao[[1]]<-intersect(lista_SNPs[[1]],lista_SNPs[[2]])
@@ -981,8 +981,8 @@ intersecao_snps(snps_selec_ref)
 intersecao_final<-intersecao_snps(snps_selec_ref)
 
 
-#####Valor-p bruto e ajustado - Seleção#####
-#Cálculo do valor p bruto e ajustado pela correção de Bonferroni
+#####Valor-p bruto e ajustado - Seleï¿½ï¿½o#####
+#Cï¿½lculo do valor p bruto e ajustado pela correï¿½ï¿½o de Bonferroni
 valor.p<-function(genotipo_fenotipo)
 {
   valor_p_bruto<-vector();
@@ -1018,7 +1018,7 @@ valor_p_bruto_selecao # Exibe os SNPs selecionados pelo valor-p bruto <= 0.05
 valor_p_corrigido_selecao # Exibe os SNPs selecionados pelo valor-p corrigido <= 0.05
 
 
-#Imprimindo as informações finais para o texto
+#Imprimindo as informaï¿½ï¿½es finais para o texto
 
 cat('SMS Linear =',snps_selec_ref[[1]])
 
@@ -1030,9 +1030,9 @@ cat('SMS Radial gamma 0,1 =',snps_selec_ref[[4]])
 
 cat('SMS Radial gamma 1 =',snps_selec_ref[[5]])
 
-cat('União =',uniao_final)
+cat('Uniï¿½o =',uniao_final)
 
-cat('Interseção =',intersecao_final)
+cat('Interseï¿½ï¿½o =',intersecao_final)
 
 cat('Valor-p bruto =',valor_p_bruto_selecao)
 
@@ -1077,28 +1077,28 @@ resultado_causais_radial_1<-validacao_cruzada(data = dados[[1]][c(var_sel_causai
                                               epsilon = epsilon, 
                                               kernel = "radial")
 ###########################################################################
-#Saída do SVR kernel linear com somente SNPs causais
-cat('Correlação do SVR Linear = ',resultado_causais_linear[5])
+#Saï¿½da do SVR kernel linear com somente SNPs causais
+cat('Correlaï¿½ï¿½o do SVR Linear = ',resultado_causais_linear[5])
 cat('R2 ajustado do SVR Linear = ',resultado_causais_linear[9])
 cat('MSE do SVR Linear = ',resultado_causais_linear[1])
 
-#Saída do SVR kernel radia gamma = 0.001 com somente SNPs causais
-cat('Correlação do SVR Radial 0,001 = ',resultado_causais_radial_0.001[5])
+#Saï¿½da do SVR kernel radia gamma = 0.001 com somente SNPs causais
+cat('Correlaï¿½ï¿½o do SVR Radial 0,001 = ',resultado_causais_radial_0.001[5])
 cat('R2 ajustado do SVR Radial 0,001 = ',resultado_causais_radial_0.001[9])
 cat('MSE do SVR Radial 0,001 = ',resultado_causais_radial_0.001[1])
 
-#Saída do SVR kernel radia gamma = 0.01 com somente SNPs causais
-cat('Correlação do SVR Radial 0,01 = ',resultado_causais_radial_0.01[5])
+#Saï¿½da do SVR kernel radia gamma = 0.01 com somente SNPs causais
+cat('Correlaï¿½ï¿½o do SVR Radial 0,01 = ',resultado_causais_radial_0.01[5])
 cat('R2 ajustado do SVR Radial 0,01 = ',resultado_causais_radial_0.01[9])
 cat('MSE do SVR Radial 0,01 = ',resultado_causais_radial_0.01[1])
 
-#Saída do SVR kernel radia gamma = 0.1 com somente SNPs causais
-cat('Correlação do SVR Radial 0,1 = ',resultado_causais_radial_0.1[5])
+#Saï¿½da do SVR kernel radia gamma = 0.1 com somente SNPs causais
+cat('Correlaï¿½ï¿½o do SVR Radial 0,1 = ',resultado_causais_radial_0.1[5])
 cat('R2 ajustado do SVR Radial 0,1 = ',resultado_causais_radial_0.1[9])
 cat('MSE do SVR Radial 0,1 = ',resultado_causais_radial_0.1[1])
 
-#Saída do SVR kernel radia gamma = 1 com somente SNPs causais
-cat('Correlação do SVR Radial 1 = ',resultado_causais_radial_1[5])
+#Saï¿½da do SVR kernel radia gamma = 1 com somente SNPs causais
+cat('Correlaï¿½ï¿½o do SVR Radial 1 = ',resultado_causais_radial_1[5])
 cat('R2 ajustado do SVR Radial 1 = ',resultado_causais_radial_1[9])
 cat('MSE do SVR Radial 1 = ',resultado_causais_radial_1[1])
 
